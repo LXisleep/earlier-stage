@@ -1,11 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul,
+        ol,
+        li {
+            list-style: none;
+        }
+
+        .bigbox {
+            width: 450px;
+            height: 400px;
+            background-color: aqua;
+            margin: 100px auto;
+            position: relative;
+        }
+
+        input {
+            width: 440px;
+            height: 50px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            border: none;
+            background-color: rgba(0, 0, 0, .01);
+            border-bottom: 1px solid black;
+            outline: none;
+            display: block;
+        }
+
+        .bigbox>ul {
+            width: 450px;
+            background-color: hotpink;
+            font-size: 18px;
+            position: absolute;
+            top: 50px;
+
+        }
+        #ding{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 50px;
+
+        }
+    </style>
 </head>
+
 <body>
-    
+    <div class="bigbox">
+        <input type="text" placeholder="账号" class="username">
+        <div></div>
+        <input type="password" placeholder="密码" class="password">
+        <div></div>
+        <button id="login">登录</button>
+        <button onclick="ulresult()" id="ding">切换</button>
+        <ul style="display: none;">
+        </ul>
+    </div>
+    <script>
+        let userArr = []
+        //数组存入本地
+        let josnStr = localStorage.getItem('userArr')
+        if(josnStr !== null){
+            userArr = JSON.parse(josnStr)
+            ullist()
+        }
+        // 1-获取dom节点
+        var inp1 = document.querySelector('.username')
+        var inp2 = document.querySelector('.password')
+        var logIn = document.querySelector('#login')
+        // 2-给登录按钮添加点击事件
+        logIn.onclick = function () {
+            //获取输入框的值
+            var username = inp1.value
+            var password = inp2.value
+            //输入框的值保存到obj对象中
+            var obj = { username, password }
+            //把obj添加到数组中
+            userArr.push(obj)
+            //调用ullist渲染页面
+            ullist()
+            //清空输入框的值
+            inp1.value = ''
+            inp2.value = ''
+            localStorage.setItem('userArr',JSON.stringify(userArr))
+        }
+        // 3-添加函数
+        function ullist() {
+            let uls = "";
+            //遍历数组元素
+            userArr.forEach(function (v, i) {
+                uls += `<li>
+                        <p onclick = "textStyle(${i})">${v.username}</p>
+                        <button onclick = "del(${i})">删除</button>
+                    </li>`
+            })
+            //ul里添加内容
+            let oul = document.querySelector("ul")
+            oul.innerHTML = uls
+        }
+        // 4-删除函数
+        function del(index) {
+            // 获取userArr数组的下标,删除的长度为1
+            userArr.splice(index, 1);
+            //调用
+            ullist()
+            localStorage.setItem('userArr',JSON.stringify(userArr))
+        }
+        // 5-切换按钮点击事件
+        function ulresult(){
+            let oul = document.querySelector('ul')
+            //判断ul的样式
+            if(oul.style.display == 'none'){
+                oul.style.display = 'block'
+            }else{
+                oul.style.display = 'none'
+            }
+        }
+        // 6-给文字添加点击事件
+        function textStyle(t){
+            //根据下表找到元素
+            var att = userArr[t]
+            //用es6的解构赋值
+            let {username,password} = att
+            inp1.value = username
+            inp2.value = password
+            //点击后ul隐藏
+            let oul = document.querySelector('ul')
+            oul.style.display = 'none'
+        }
+    </script>
 </body>
+
 </html>
