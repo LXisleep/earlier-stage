@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a,
+        input {
+            outline: none;
+
+        }
+
+        ul,
+        ol,
+        li {
+            list-style: none;
+        }
+
+        body {
+            background-color: #f1f5f8;
+        }
+
+        .zhong {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .topbox {
+            background-color: #fff;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ulst {
+            display: flex;
+        }
+
+        .ulst>li {
+            width: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .navon {
+            font-weight: bolder;
+        }
+
+        .topbox>.topox {
+            display: flex;
+            width: 500px;
+            justify-content: space-between;
+            line-height: 50px;
+        }
+
+        .topox>input {
+            width: 130px;
+            height: 30px;
+            margin: 8px 0px;
+        }
+
+        .sqa {
+            display: flex;
+            padding: 10px 0px;
+        }
+
+        .sqa>span {
+            display: block;
+            height: 30px;
+            width: 50px;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        .topSpan {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .sou {
+            height: 100px;
+            background-color: #fff;
+            display: flex;
+            align-items:center;
+            justify-content: center;
+        }
+
+        .sou>:nth-child(1) {
+            width: 500px;
+            height: 30px;
+            box-sizing: border-box;
+            border: 2px solid #333;
+            border-radius: 5px 0px 0px 5px;
+        }
+
+        .sou>:nth-child(2) {
+            width: 100px;
+            height: 30px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 0px 5px 5px 0px;
+        }
+
+        .ou {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+
+        .ou>li {
+            width: 125px;
+
+        }
+
+        .ou>li>a {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+            align-items: center;
+        }
+
+        .ou>li>a>img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="zhong topbox">
+        <ul class="ulst">
+            <li><a href="" class="navon">首页</a></li>
+            <li><a href="">搜搜</a></li>
+            <li><a href="">动态</a></li>
+            <li><a href="">文章</a></li>
+            <li><a href="">工具</a></li>
+            <li><a href="">游戏</a></li>
+        </ul>
+        <div class="topox">
+            <input type="text" name="" id="" placeholder="搜索站内网址">
+            <p class="Ptime">aaaaa</p>
+            <p>北京市</p>
+            <p class="sqa">
+                <span class="topSpan">注册</span>
+                <span>登录</span>
+            </p>
+        </div>
+    </div>
+    <div class="zhong sou">
+        <input type="text" name="" id="">
+        <p>搜索</p>
+    </div>
+    <ul class="zhong ou">
+        <li>
+            <a href="">
+                <img src="http://images.frontendjs.com/yikm.png?imageView2/2/h/35" alt="">
+                <p>小霸王</p>
+            </a>
+        </li>
+    </ul>
+    <script>
+        //设置日期
+        function fo() {
+            let xian = new Date()
+            let month = xian.getMonth() + 1
+            console.log(month);
+            let xdate = xian.getDate()
+            console.log(xdate);
+            let Day = xian.getDay()
+            if (Day === 0) {
+                Day = '周日'
+            } else if (Day === 1) {
+                Day = '周一'
+            } else if (Day === 2) {
+                Day = '周一\二'
+            } else if (Day === 3) {
+                Day = '周三'
+            } else if (Day === 4) {
+                Day = '周四'
+            } else if (Day === 5) {
+                Day = '周五'
+            } else if (Day === 6) {
+                Day = '周六'
+            }
+            console.log(Day);
+            document.querySelector('.Ptime').innerHTML = `${month}月${xdate}日${Day}`
+        }
+        fo()
+        function fn() {
+            let xre = new XMLHttpRequest()
+            let url = 'https://www.frontendjs.com/api/w_site/hot?limit=24'
+            xre.open('get', url);
+            xre.send()
+            xre.onload = function () {
+                if (xre.status == 200) {
+                    // console.log(xre.responseText);
+                    let obj = JSON.parse(xre.responseText)
+                    console.log(obj);
+                    let stt = ''
+                    obj.data.forEach(v => {
+                        stt += `  <li>
+                                <a href="${v.link}">
+                                    <img src="${v.img}" alt="">
+                                    <p>${v.title}</p>
+                                </a>
+                            </li> `
+                    });
+                    document.querySelector('.ou').innerHTML = stt
+                }
+            }
+        }
+        fn()
+    </script>
+</body>
+
+</html>
